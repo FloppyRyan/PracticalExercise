@@ -26,6 +26,20 @@ namespace PracticalExercise
                     foreach(List l in response.List)
                     {
                         DateTime date = UnixTimeStampToDateTime(l.Dt);
+                        int dayDiff = (date - DateTime.Now).Days;
+                        Console.Write($"The difference in days is {dayDiff}\t");
+                        Console.WriteLine($"The date and time: {date.Year}/{date.Month}/{date.Day} | {date.Hour}:{date.Minute}:{date.Second}\t");
+                        Console.Write($"Current Temp: {l.Main.Temp} | Temp Min: {l.Main.TempMin} | Temp Max: {l.Main.TempMax}");
+                        foreach(Weather w in l.Weather)
+                        {
+                            Console.WriteLine($"Weather conditions: {w.Main} | {w.Id} | {w.Description}");
+                            if (w.Main.ToString().ToLower().Trim().Contains("rain"))
+                            {
+                                Console.WriteLine($"Rain: {l.Rain.The3H}");
+                            }
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine();
                     }
                 }
             }catch(Exception e)
@@ -37,6 +51,13 @@ namespace PracticalExercise
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
         }
+
+        /// <summary>
+        /// Converts a Unix timestamp in seconds from the epoch to a DateTime object
+        /// Stolen from https://stackoverflow.com/questions/249760/how-can-i-convert-a-unix-timestamp-to-datetime-and-vice-versa
+        /// </summary>
+        /// <param name="unixTimeStamp">The Unix timestamp</param>
+        /// <returns>A new DateTime object</returns>
         public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
             // Unix timestamp is seconds past epoch
