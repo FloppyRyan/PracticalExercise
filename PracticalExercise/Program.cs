@@ -1,13 +1,26 @@
-﻿using System;
+﻿//-----------------------------------------------------------------------
+// <copyright file="Program.cs" company="CompanyName">
+//     Company copyright tag.
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace PracticalExercise
 {
+    /// <summary>
+    /// The main program
+    /// </summary>
     public class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The main operation
+        /// </summary>
+        /// <param name="args">The arguments</param>
+        public static void Main(string[] args)
         {
             try
             {
@@ -26,23 +39,23 @@ namespace PracticalExercise
                 else
                 {
                     var weatherObjs = CalculateMaxTempAndConditionForDate(response.List);
-                    foreach(var w in weatherObjs)
+                    foreach (var w in weatherObjs)
                     {
-                        Console.WriteLine($"For {w.date}\tHigh {w.maxTemp}F\tWeather ID {w.weatherId}");
+                        Console.WriteLine($"For {w.Date}\tHigh {w.MaxTemp}F\tWeather ID {w.WeatherId}");
 
-                        // When it is less than 55F or it is raining
-                        if (w.maxTemp < 55 || (w.weatherId >= 500 && w.weatherId <= 599))
+                        if (w.MaxTemp < 55 || (w.WeatherId >= 500 && w.WeatherId <= 599))
                         {
+                        // When it is less than 55F or it is raining
                             Console.WriteLine("Send Customers an SMS Message");
                         }
-                        // When it is not raining, but between 55F and 75F
-                        else if(w.maxTemp >= 55 && w.maxTemp <= 75)
+                        else if (w.MaxTemp >= 55 && w.MaxTemp <= 75)
                         {
+                        // When it is not raining, but between 55F and 75F
                             Console.WriteLine("Send Customers an Email");
                         }
-                        // When it is sunny and > 75F
-                        else if (w.maxTemp > 75 && w.weatherId == 800)
+                        else if (w.MaxTemp > 75 && w.WeatherId == 800)
                         {
+                        // When it is sunny and > 75F
                             Console.WriteLine("Call Customers");
                         }
                         else
@@ -66,18 +79,24 @@ namespace PracticalExercise
 
         /// <summary>
         /// Converts a Unix timestamp in seconds from the epoch to a DateTime object
-        /// Stolen from https://stackoverflow.com/questions/249760/how-can-i-convert-a-unix-timestamp-to-datetime-and-vice-versa
+        /// Taken from https://stackoverflow.com/questions/249760/how-can-i-convert-a-unix-timestamp-to-datetime-and-vice-versa
         /// </summary>
         /// <param name="unixTimeStamp">The Unix timestamp</param>
         /// <returns>A new DateTime object</returns>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed.")]
         private static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
             // Unix timestamp is seconds past epoch
-            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
-            return dtDateTime;
+            DateTime newDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            newDateTime = newDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return newDateTime;
         }
 
+        /// <summary>
+        /// Calculates the maximum temperature for a day, as well as the worst conditions
+        /// </summary>
+        /// <param name="list">The <see cref="List"/></param>
+        /// <returns>A <see cref="WeatherDateObject"/></returns>
         private static List<WeatherDateObject> CalculateMaxTempAndConditionForDate(List<List> list)
         {
             var tempDate = UnixTimeStampToDateTime(list[0].Dt);
@@ -91,22 +110,22 @@ namespace PracticalExercise
                 var date = UnixTimeStampToDateTime(k.Dt);
                 var t = new WeatherDateObject(new DateTime(date.Year, date.Month, date.Day), k.Main.TempMax, k.Weather[0].Id);
 
-                var x = ret.Find(j => j.date == t.date);
+                var x = ret.Find(j => j.Date == t.Date);
                 if (x != null)
                 {
-                    if (x.maxTemp > t.maxTemp)
+                    if (x.MaxTemp > t.MaxTemp)
                     {
-                        if (t.weatherId < x.weatherId)
+                        if (t.WeatherId < x.WeatherId)
                         {
-                            x.weatherId = t.weatherId;
+                            x.WeatherId = t.WeatherId;
                         }
                     }
                     else
                     {
-                        x.maxTemp = t.maxTemp;
-                        if (t.weatherId < x.weatherId)
+                        x.MaxTemp = t.MaxTemp;
+                        if (t.WeatherId < x.WeatherId)
                         {
-                            x.weatherId = t.weatherId;
+                            x.WeatherId = t.WeatherId;
                         }
                     }
                 }
@@ -117,16 +136,16 @@ namespace PracticalExercise
             }
 
             // Remove the information for today
-            foreach(var r in ret)
+            foreach (var r in ret)
             {
-                if(r.date == DateTime.Today)
+                if (r.Date == DateTime.Today)
                 {
                     ret.Remove(r);
                     break;
                 }
             }
 
-            return ret.OrderBy(j => j.date).ToList();
+            return ret.OrderBy(j => j.Date).ToList();
         }
     }
 }

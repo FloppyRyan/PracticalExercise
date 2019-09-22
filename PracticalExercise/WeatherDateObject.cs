@@ -1,4 +1,9 @@
-﻿using System;
+﻿//-----------------------------------------------------------------------
+// <copyright file="WeatherDateObject.cs" company="CompanyName">
+//     Company copyright tag.
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
 
 namespace PracticalExercise
 {
@@ -8,29 +13,53 @@ namespace PracticalExercise
     public class WeatherDateObject
     {
         /// <summary>
-        /// Instantiates a new instance of the <see cref="WeatherDateObject"/>
+        /// The date
+        /// </summary>
+        private DateTime date;
+
+        /// <summary>
+        /// The maximum temperature
+        /// </summary>
+        private double maxTemp;
+
+        /// <summary>
+        /// The weather id
+        /// </summary>
+        private long weatherId;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WeatherDateObject"/> class
         /// </summary>
         public WeatherDateObject()
         {
-
         }
 
         /// <summary>
-        /// Instantiates a new isntance of the <see cref="WeatherDateObject"/>
+        /// Initializes a new instance of the <see cref="WeatherDateObject"/> class
         /// </summary>
         /// <param name="date">The date</param>
         /// <param name="maxTemp">The maximum temperature</param>
         /// <param name="weatherId">The weather id</param>
         public WeatherDateObject(DateTime date, double maxTemp, long weatherId)
         {
-            this.date = date;
-            this.maxTemp = maxTemp;
-            this.weatherId = weatherId;
+            this.Date = date;
+            this.MaxTemp = maxTemp;
+            this.WeatherId = weatherId;
         }
 
-        public DateTime date;
-        public double maxTemp;
-        public long weatherId;
+        /// <summary>
+        /// Gets or sets the date
+        /// </summary>
+        public DateTime Date { get => this.date; set => this.date = value; }
+
+        /// <summary>
+        /// Gets or sets the maximum temperature
+        /// </summary>
+        public double MaxTemp { get => this.maxTemp; set => this.maxTemp = value; }
+
+        /// <summary>
+        /// Gets or sets the weather id
+        /// </summary>
+        public long WeatherId { get => this.weatherId; set => this.weatherId = value; }
     }
-}
 }
