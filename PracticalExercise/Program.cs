@@ -25,6 +25,7 @@ namespace PracticalExercise
                     Console.WriteLine(response.City.Name);
                     foreach(List l in response.List)
                     {
+
                         DateTime date = UnixTimeStampToDateTime(l.Dt);
                         int dayDiff = (date - DateTime.Now).Days;
                         Console.Write($"The difference in days is {dayDiff}\t");
@@ -64,6 +65,11 @@ namespace PracticalExercise
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
+        }
+
+        public void CalculateMaxTempAndConditionForDate(List list)
+        {
+            var tad = new { date = DateTime.Now, high = 90, Condition = Conditions.Sunny };
         }
     }
 }

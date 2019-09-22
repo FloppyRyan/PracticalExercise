@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿/// This is auto generated from https://app.quicktype.io/#
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Globalization;
